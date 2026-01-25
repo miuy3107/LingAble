@@ -10,6 +10,6 @@ document.getElementById("tuvung").onclick = () => {
     window.location.href = "hoithoai.html";
   };
 
-  document.getElementById("videocall").onclick = () => {
-    window.location.href = "videocall.html";
+  document.getElementById("baidoc").onclick = () => {
+    window.location.href = "baidoc.html";
   };
