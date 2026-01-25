@@ -1,0 +1,115 @@
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+        /* ===== Stars ===== */
+    .star {
+    position: absolute;
+    color: white;
+    opacity: 0.75;
+    pointer-events: none;
+    animation: float 3s ease-in-out infinite alternate;
+    }
+
+    .star.small { font-size: 0.7rem; }
+    .star.mid   { font-size: 1rem; }
+    .star.big   { font-size: 1.5rem; }
+
+    @keyframes float {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-6px); }
+    }
+
+
+    body {
+      height: 100vh;
+      font-family: Arial, system-ui, sans-serif;
+      background: #0b1c3d;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== TOP (50%) ===== */
+    .top {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    }
+
+
+    .top img {
+      width: 70%;
+      max-width: 330px;
+      height: auto;
+    transform: translateY(9.7%);
+    left: 20%;
+    }
+
+    /* ===== BOTTOM (50%) ===== */
+    .bottom {
+      flex: 1;
+      background: #e5e9f3;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .menu-box {
+      background: white;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #0b1c3d;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .menu-box:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    /* ===== User badge ===== */
+    .user-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #e5ebf6;
+    color: #0b1c3d;
+    padding: 4px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    }
+
+    /* icon người */
+    .user-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0b1c3d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    }
+

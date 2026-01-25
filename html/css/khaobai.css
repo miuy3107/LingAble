@@ -1,0 +1,123 @@
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        background: #e5e9f3;
+    }
+
+    /* Stars */
+    .star {
+        position: absolute;
+        color: #0b1c3d;
+        opacity: 0.75;
+        pointer-events: none;
+    }
+
+    .star.small {
+        font-size: 0.7rem;
+    }
+
+    .star.big {
+        font-size: 1.4rem;
+    }
+
+    .star.mid {
+        font-size: 1rem;
+    }
+
+    @keyframes float {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-6px);
+        }
+    }
+
+    .star {
+        animation: float 3s ease-in-out infinite alternate;
+    }
+
+    .top {
+        flex: 2;
+        position: relative;
+    }
+
+    /* WRAPPER GIỮA MÀN HÌNH */
+    .dolphin-wrapper {
+        position: absolute;
+        left: 50%;
+        bottom: -0px;
+        /* đụng vào bottom */
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+    }
+
+    /* DOLPHIN */
+    .dolphin {
+        width: 350px;
+        /* mobile-friendly hơn 400px */
+        height: auto;
+    }
+
+    /* CHAT BUBBLE */
+    .chat-bubble {
+        position: relative;
+        margin-left: 12px;
+        /* sát dolphin */
+        padding: 14px 18px;
+        background: white;
+        color: #0b1c3d;
+        border-radius: 18px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+    }
+
+    /* MŨI NHỌN BUBBLE */
+    .chat-bubble::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 22px;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 10px solid white;
+    }
+
+    .chat-bubble {
+        margin-left: -170px;
+        transform: translateY(-70px);
+    }
+
+    .bottom {
+        flex: 2;
+        background: #0b1c3d;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+
+    .record-btn {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(211, 211, 211, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .record-btn img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
