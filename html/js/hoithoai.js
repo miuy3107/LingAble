@@ -10,9 +10,10 @@ const lessons = [
 /* ===============================
    STATE
 ================================ */
-let phase = 1; // 1: nói tiếng Việt | 2: luyện nói tiếng Anh
+let phase = 1; // 1: nói VI | 2: luyện EN
 let index = 0;
 let starCount = 0;
+let silenceTimer = null;
 
 /* ===============================
    ELEMENTS
@@ -33,52 +34,73 @@ const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 if (!SpeechRecognition) {
-  alert("Trình duyệt của bạn không hỗ trợ Speech Recognition 😢");
+  alert("Trình duyệt không hỗ trợ Speech Recognition 😢");
 }
 
 const recognition = new SpeechRecognition();
-recognition.continuous = false;
-recognition.interimResults = false;
+recognition.continuous = true;       // giữ mic mở
+recognition.interimResults = true;   // lấy kết quả ngay
+recognition.maxAlternatives = 1;
 
 /* ===============================
-   EVENTS
+   EVENT
 ================================ */
 recordArea.addEventListener("click", () => {
-  if (phase === 1) {
-    startVietnameseInput();
-  } else {
-    startEnglishPractice();
-  }
+  try {
+    recognition.stop(); // tránh lỗi spam click
+  } catch (e) {}
+
+  recognition.start();
 });
+
+/* ===============================
+   MAIN LOGIC
+================================ */
+recognition.onresult = (e) => {
+  clearTimeout(silenceTimer);
+
+  let transcript = "";
+
+  for (let i = e.resultIndex; i < e.results.length; i++) {
+    transcript += e.results[i][0].transcript;
+  }
+
+  transcript = transcript.trim();
+  if (transcript.length < 2) return;
+
+  // ⏱️ nếu im lặng 250ms → xử lý
+  silenceTimer = setTimeout(() => {
+    recognition.stop();
+    handleTranscript(transcript);
+  }, 250);
+};
+
+/* ===============================
+   HANDLE TRANSCRIPT
+================================ */
+function handleTranscript(text) {
+  if (phase === 1) handleVietnamese(text);
+  else handleEnglish(text);
+}
 
 /* ===============================
    PHASE 1 – VI INPUT
 ================================ */
-function startVietnameseInput() {
-  recognition.lang = "vi-VN";
-  recognition.start();
+function handleVietnamese(text) {
+  addBubble(text, "left");
 
-  recognition.onresult = (e) => {
-    const spokenVI = e.results[0][0].transcript;
+  setTimeout(() => {
+    addBubble(lessons[index].en, "right");
+    index++;
 
-    // Bubble tiếng Việt
-    addBubble(spokenVI, "left");
-
-    // Bubble tiếng Anh tương ứng
-    setTimeout(() => {
-      addBubble(lessons[index].en, "right");
-      index++;
-
-      // Hết 3 câu → chuyển phase
-      if (index === lessons.length) {
-        setTimeout(startPhase2, 800);
-      }
-    }, 400);
-  };
+    if (index === lessons.length) {
+      setTimeout(startPhase2, 700);
+    }
+  }, 300);
 }
 
 /* ===============================
-   PHASE 2 – RESET & SHOW EN
+   PHASE 2 – RESET + SHOW EN
 ================================ */
 function startPhase2() {
   phase = 2;
@@ -93,25 +115,19 @@ function startPhase2() {
 }
 
 /* ===============================
-   PHASE 2 – PRACTICE EN
+   PHASE 2 – EN PRACTICE
 ================================ */
-function startEnglishPractice() {
-  recognition.lang = "en-US";
-  recognition.start();
+function handleEnglish(text) {
+  const spoken = text.toLowerCase();
+  const target = lessons[index].en.toLowerCase();
 
-  recognition.onresult = (e) => {
-    const spoken = e.results[0][0].transcript.toLowerCase();
-    const target = lessons[index].en.toLowerCase();
-
-    // Match đơn giản (cho học sinh dễ thở 😄)
-    if (spoken.includes(target)) {
-      activateStar();
-    }
-  };
+  if (spoken.includes(target)) {
+    activateStar();
+  }
 }
 
 /* ===============================
-   STARS LOGIC
+   STAR LOGIC
 ================================ */
 function activateStar() {
   if (starCount < 3) {
@@ -158,7 +174,7 @@ function showGreatJob() {
 }
 
 /* ===============================
-   CONFETTI (GIỮ NGUYÊN)
+   CONFETTI
 ================================ */
 function launchConfetti() {
   for (let i = 0; i < 30; i++) {
